@@ -1,0 +1,406 @@
+﻿<Window x:Class="Vi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Vi"
+        mc:Ignorable="d"
+        Icon="Resources/ViIcon.png"
+        Title="Vi Player" 
+        Height="500" 
+        Width="300"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Grid x:Name="Grid">
+                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
+                                <Border x:Name="Rectangle1" CornerRadius="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Tag" Value="Horizontal">
+                                    <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
+                                    <Setter TargetName="Rectangle1" Property="Height" Value="7" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+
+            <!--ScrollBars-->
+            <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+                <Setter Property="Foreground" Value="LightGray" />
+                <Setter Property="Background" Value="DarkGray" />
+                <Setter Property="Width" Value="10" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            <Grid x:Name="GridRoot" Width="19" Background="{x:Null}">
+                                <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                                    <Track.Thumb>
+                                        <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
+                                    </Track.Thumb>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton x:Name="PageUp" Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="false" />
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton x:Name="PageDown" Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="false" />
+                                    </Track.DecreaseRepeatButton>
+                                </Track>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
+                                    <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
+                                </Trigger>
+                                <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
+                                    <Setter Value="{DynamicResource DarkBrush}" TargetName="Thumb" Property="Background" />
+                                </Trigger>
+
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                                <Trigger Property="Orientation" Value="Horizontal">
+                                    <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="-90" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="-90" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Width" Value="Auto" />
+                                    <Setter Property="Height" Value="12" />
+                                    <Setter TargetName="Thumb" Property="Tag" Value="Horizontal" />
+                                    <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                                    <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="Black">
+        <Grid Background="#44444444"
+              Margin="10" 
+              Height="300" 
+              VerticalAlignment="Top">
+            <Grid VerticalAlignment="Top">
+                <Button x:Name="ProgramOff"
+                        Click="ProgramOff_OnClick"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        BorderBrush="{x:Null}" 
+                        Command="{Binding ProgramOff}"
+                        HorizontalAlignment="Right"
+                        Width="20" 
+                        Height="20" 
+                        Margin="10,0">
+                    <materialDesign:PackIcon Kind="Power" 
+                                             VerticalAlignment="Center" 
+                                             Width="20" 
+                                             Height="20">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        BorderBrush="{x:Null}" 
+                        HorizontalAlignment="Left"
+                        Width="20" 
+                        x:Name="AddTracks"
+                        Click="AddTracks_OnClick"
+                        Height="20" 
+                        Margin="10,0">
+                    <materialDesign:PackIcon Kind="Plus" 
+                                             VerticalAlignment="Center" 
+                                             Width="20" 
+                                             Height="20">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+                <TextBlock Text="Vi" 
+                           Margin="5" 
+                           HorizontalAlignment="Center" 
+                           FontFamily="Segoe Print" 
+                           FontSize="16" 
+                           Foreground="#FFFF0000" />
+            </Grid>
+
+            <Label Content="" 
+                   x:Name="TrackName"
+                   Margin="25" 
+                   Foreground="#FFFF2222"
+                   FontFamily="Segoe Script"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" />
+            <Grid VerticalAlignment="Top" 
+                  Margin="0,50">
+                <Ellipse Width="150" 
+                         Height="150" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" 
+                                             MappingMode="RelativeToBoundingBox" 
+                                             StartPoint="0.5,0">
+                            <GradientStop x:Name="c1" 
+                                          Color="Black" 
+                                          Offset="0.71"/>
+                            <GradientStop Color="#FFFF2222"/>
+                            <GradientStop x:Name="c2" 
+                                          Color="#FEB13418"
+                                          Offset="0.6"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                </Ellipse>
+                <Ellipse Width="145" 
+                         Height="145" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FF0C0604" Offset="1"/>
+                            <GradientStop Color="#FF210900" Offset="0.047"/>
+                            <GradientStop Color="#FF1D0800" Offset="0.602"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Ellipse Width="135" 
+                         Height="135">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="Resources/Paints.jpg" 
+                                    Stretch="Uniform"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Ellipse Fill="#7F000000"  
+                         Width="135" 
+                         Height="135"/>
+                <Label Content=""
+                   x:Name="TimeTrack" 
+                   Margin="0,126,215,0" 
+                   VerticalAlignment="Top" Foreground="#FFFF2222" HorizontalAlignment="Right" Width="40"/>
+            </Grid>
+            <Grid VerticalAlignment="Top"
+                  Margin="5"/>
+            <Grid VerticalAlignment="Bottom" 
+                  Margin="5">
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        x:Name="RepeatTrack"
+                        Click="RepeatTrack_OnClick"
+                        BorderBrush="{x:Null}" 
+                        HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Kind="RotateRight" 
+                                             VerticalAlignment="Center" 
+                                             Width="30" 
+                                             Height="30">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        BorderBrush="{x:Null}"  
+                        x:Name="PreviousTrack"
+                        Click="PreviousTrack_OnClick"
+                        HorizontalAlignment="Left" 
+                        Margin="50,0">
+                    <materialDesign:PackIcon Kind="ChevronLeft" 
+                                             VerticalAlignment="Center" 
+                                             Width="30" 
+                                             Height="30">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="#00000000" 
+                        x:Name="PlayAudio"
+                        Click="PlayAudio_OnClick"
+                        BorderBrush="#70702222" 
+                        HorizontalAlignment="Center">
+                    <Button.Effect>
+                        <DropShadowEffect Color="#FFD67619" 
+                                          RenderingBias="Quality" 
+                                          BlurRadius="40" 
+                                          Direction="0"/>
+                    </Button.Effect>
+                    <materialDesign:PackIcon Kind="Pause" 
+                                             VerticalAlignment="Center" 
+                                             Width="30" 
+                                             Height="30">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        BorderBrush="{x:Null}"  
+                        x:Name="NextTrack"
+                        Click="NextTrack_OnClick"
+                        HorizontalAlignment="Right" 
+                        Margin="50,0">
+                    <materialDesign:PackIcon Kind="ChevronRight" 
+                                             VerticalAlignment="Center" 
+                                             Width="30" 
+                                             Height="30">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Background="{x:Null}" 
+                        BorderBrush="{x:Null}" 
+                        x:Name="RandomTracks"
+                        Click="RandomTracks_OnClick"
+                        HorizontalAlignment="Right">
+                    <materialDesign:PackIcon Kind="ShuffleVariant" 
+                                             VerticalAlignment="Center" 
+                                             Width="30" 
+                                             Height="30">
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" 
+                                                 MappingMode="RelativeToBoundingBox" 
+                                                 StartPoint="0.5,0">
+                                <GradientStop Color="#FFFF2222"/>
+                                <GradientStop Color="#FFFF1515" Offset="0.747"/>
+                                <GradientStop Color="#FFFF0505" Offset="0.807"/>
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+            </Grid>
+            <Slider Style="{StaticResource MaterialDesignDiscreteHorizontalSlider}"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    x:Name="SliderTrack"
+                    PreviewMouseUp="SliderTrack_OnPreviewMouseUp"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch" 
+                    Margin="10,188,10,50" 
+                    Foreground="#FFFF2222" 
+                    Height="62" 
+                    Maximum="100" 
+                    IsDirectionReversed="False" 
+                    LargeChange="10" 
+                    IsSnapToTickEnabled="True" 
+                    IsSelectionRangeEnabled="True" 
+                    IsMoveToPointEnabled="True" 
+                    SmallChange="1"/>
+            <Slider Orientation="Vertical"
+                    x:Name="SliderVolume"
+                    ValueChanged="SliderVolume_OnValueChanged"
+                    Style="{StaticResource MaterialDesignDiscreteVerticalSlider}"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Foreground="#FFFF2222"
+                    TickPlacement="BottomRight"
+                    VerticalAlignment="Stretch" 
+                    Margin="218,50,5,100" 
+                    Maximum="100" 
+                    IsDirectionReversed="False" 
+                    LargeChange="10" 
+                    IsSnapToTickEnabled="True" 
+                    IsSelectionRangeEnabled="True" 
+                    IsMoveToPointEnabled="True"
+                    Value="100">
+            </Slider>
+            <Label Content=""  Foreground="#FFFF2222"
+                   x:Name="DurationTrack"
+                   HorizontalAlignment="Left" 
+                   Margin="218,176,0,0" 
+                   VerticalAlignment="Top"/>
+        </Grid>
+        <ListBox VerticalAlignment="Bottom" 
+                 Height="150" 
+                 x:Name="playList"
+                 SelectionChanged="PlayList_OnSelectionChanged"
+                 Margin="5" 
+                 Foreground="White">
+            <!--<ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="30" Height="30">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="Resources/Paints.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock Text="" 
+                                   x:Name="TrackNameListBox"
+                                   Margin="10,0" 
+                                   VerticalAlignment="Center" 
+                                   Width="100" 
+                                   TextTrimming="CharacterEllipsis"/>
+                        <Label Content="" 
+                               x:Name="TrackDurationListBox"
+                               Margin="10,0" 
+                               VerticalAlignment="Center"/>
+
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>-->
+        </ListBox>
+    </Grid>
+</Window>
