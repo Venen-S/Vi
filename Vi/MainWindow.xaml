@@ -8,9 +8,10 @@
         mc:Ignorable="d"
         Icon="Resources/ViIcon.png"
         Title="Vi Player" 
-        Height="500" 
+        Height="550" 
         Width="300"
         ResizeMode="NoResize"
+        MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None">
     <Window.Resources>
@@ -33,7 +34,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
+
 
             <!--ScrollBars-->
             <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
@@ -93,7 +94,7 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Background="Black">
+    <Grid Background="Black" Margin="0,0,0,-12">
         <Grid Background="#44444444"
               Margin="10" 
               Height="300" 
@@ -358,14 +359,14 @@
                     Foreground="#FFFF2222"
                     TickPlacement="BottomRight"
                     VerticalAlignment="Stretch" 
-                    Margin="218,50,5,100" 
+                    Margin="0,50,5,100" 
                     Maximum="100" 
                     IsDirectionReversed="False" 
                     LargeChange="10" 
                     IsSnapToTickEnabled="True" 
                     IsSelectionRangeEnabled="True" 
                     IsMoveToPointEnabled="True"
-                    Value="100">
+                    Value="100" HorizontalAlignment="Right" Width="49">
             </Slider>
             <Label Content=""  Foreground="#FFFF2222"
                    x:Name="DurationTrack"
@@ -374,10 +375,10 @@
                    VerticalAlignment="Top"/>
         </Grid>
         <ListBox VerticalAlignment="Bottom" 
-                 Height="150" 
+                 Height="242" 
                  x:Name="playList"
                  SelectionChanged="PlayList_OnSelectionChanged"
-                 Margin="5" 
+                 Margin="5,0,5,5" 
                  Foreground="White">
             <!--<ListBox.ItemTemplate>
                 <DataTemplate>

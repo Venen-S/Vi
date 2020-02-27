@@ -109,5 +109,10 @@ namespace Vi
                 return;
             Player.SelectAudio(((ListBox)sender).SelectedIndex);
         }
+
+        private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }
